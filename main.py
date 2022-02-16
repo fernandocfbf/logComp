@@ -15,6 +15,6 @@ operation = sys.argv[1]
 trimm = remove_blanks(operation)
 ops, nums = split_op_and_num(trimm, OPERATIONS)
 result = resolve_operation(ops, nums)
-if result:
+if result != None:
     print(result)
 
