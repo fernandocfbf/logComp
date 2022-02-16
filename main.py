@@ -1,12 +1,19 @@
 from os import remove
+from posixpath import split
 import sys
 
-#created functions
+# constants
+from src.general.constants import OPERATIONS
+
+# created functions
 from src.utils.remove_blanks import remove_blanks
-from utils.split_op_and_num import split_op_and_num
+from src.utils.split_op_and_num import split_op_and_num
+from src.utils.resolve_operation import resolve_operation
+
 
 operation = sys.argv[1]
 trimm = remove_blanks(operation)
-
-print("trimm -> ", trimm)
+ops, nums = split_op_and_num(trimm, OPERATIONS)
+result = resolve_operation(ops, nums)
+print("The final result is: {0}".format(result))
 

@@ -6,7 +6,6 @@ def split_op_and_num(string, operations):
     '''
     res_op = list()
     res_num = list()
-    reset_number = False
     current_number = ""
     for char in string:
         if char in operations:
@@ -15,4 +14,5 @@ def split_op_and_num(string, operations):
             current_number = "" # reset string
         else:
             current_number += char
+    res_num.append(current_number) # add the final number
     return [res_op, res_num] 
