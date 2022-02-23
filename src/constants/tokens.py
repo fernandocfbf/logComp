@@ -1,0 +1,4 @@
+TOKENS = {
+    "+": "PLUS",
+    "-": "MINUS"
+    }
