@@ -1,3 +1,5 @@
+from classes.Token import Token
+from classes.Tokenizer import Tokenizer
 from src.constants.tokens import TOKENS
 
 class Parser():
@@ -30,6 +32,17 @@ class Parser():
             return result
         else:
             raise Exception("Invalid expression")
+    
+    def run(expression):
+        '''
+        input: expression with the operations to be performed (string)
+        output: expression result (int)
+        description: receives an expression in string format and calculates the result 
+        '''
+        tokens = Tokenizer(expression, -1, Token('number', 0))
+        final_result = parseExpression(tokens)
+        return final_result
+
 
 
 
