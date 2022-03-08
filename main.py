@@ -1,20 +1,8 @@
-from os import remove
-from posixpath import split
 import sys
 
-# constants
-from src.general.constants import OPERATIONS
+from src.classes.Parser import Parser
 
-# created functions
-from src.utils.remove_blanks import remove_blanks
-from src.utils.split_op_and_num import split_op_and_num
-from src.utils.resolve_operation import resolve_operation
-
-
-operation = sys.argv[1]
-trimm = remove_blanks(operation)
-ops, nums = split_op_and_num(trimm, OPERATIONS)
-result = resolve_operation(ops, nums)
-if result != None:
-    print(result)
-
+expression = sys.argv[1]
+exp_result = Parser.run(expression) # calculates exp
+if exp_result != None:
+    print(exp_result)
