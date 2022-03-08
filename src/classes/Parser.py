@@ -1,5 +1,5 @@
-from classes.Token import Token
-from classes.Tokenizer import Tokenizer
+from src.classes.Token import Token
+from src.classes.Tokenizer import Tokenizer
 from src.constants.tokens import TOKENS
 
 class Parser():
@@ -13,19 +13,20 @@ class Parser():
         '''
         result = 0
         if tokenizer.actual.type == "number":
-            result = tokenizer.actual
-            next_token = tokenizer.selectNext() # Token object (type, value)
+            result = int(tokenizer.actual.value)
+            next_token = tokenizer.selectNext() # read first number
+            next_token = tokenizer.selectNext() # read operator
             while next_token.type in TOKENS:
-                if next_token.type == '+':
+                if next_token.type == "+":
                     next_token = tokenizer.selectNext()
                     if next_token.type == "number":
-                        result += next_token.value # sum the token value
+                        result += int(next_token.value) # sum the token value
                     else:
                         raise Exception("Invalid syntax")
-                elif next_token.type == '-':
+                elif next_token.type == "-":
                     next_token = tokenizer.selectNext()
                     if next_token.type == "number":
-                        result -= next_token.value # subtract the token value
+                        result -= int(next_token.value) # subtract the token value
                     else:
                         raise Exception("Invalid syntax")
                 next_token = tokenizer.selectNext()
@@ -39,8 +40,9 @@ class Parser():
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''
-        tokens = Tokenizer(expression, -1, Token('number', 0))
-        final_result = parseExpression(tokens)
+        expression = expression.replace(" ", "")
+        tokens = Tokenizer(expression, 0, Token('number', expression[0]))
+        final_result = Parser.parseExpression(tokens)
         return final_result
 
 

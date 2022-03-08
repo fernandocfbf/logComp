@@ -1,5 +1,5 @@
 from src.constants.tokens import TOKENS
-from Token import Token
+from src.classes.Token import Token
 
 class Tokenizer:
     def __init__(self, origin, position, actual):
@@ -13,6 +13,9 @@ class Tokenizer:
         output: Token type object (self.actual)
         description: read the next token from the input and update the actual and position atributes
         '''
+        if self.position >= len(self.origin):
+            self.actual = Token("EOF", "")
+            return self.actual
         current_token = self.origin[self.position]
         if current_token in TOKENS:
             self.position += 1
@@ -20,13 +23,15 @@ class Tokenizer:
         elif current_token.isnumeric():
             number = current_token
             self.position += 1
-            while (number.isnumeric()):
-                number += self.origin[self.position]
-                self.position += 1
+            if (self.position < len(self.origin)):
+                while (self.origin[self.position].isnumeric()):
+                    number += self.origin[self.position]
+                    self.position += 1
+                    if self.position >= len(self.origin):
+                        break
             self.actual = Token("number", number)
-        elif self.position >= len(self.origin):
-            self.actual = Token("EOF", "")
         else:
             raise Exception("Character didn't recognize") 
         return self.actual
 
+ 
