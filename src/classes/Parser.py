@@ -13,21 +13,21 @@ class Parser():
         '''
         result = 0
         if tokenizer.actual.type == "number":
-            result = int(tokenizer.actual.value)
             next_token = tokenizer.selectNext() # read first number
+            result = int(tokenizer.actual.value)
             next_token = tokenizer.selectNext() # read operator
             while next_token.type in TOKENS:
                 if next_token.type == "+":
                     next_token = tokenizer.selectNext()
                     if next_token.type == "number":
                         result += int(next_token.value) # sum the token value
-                    else:
+                    elif next_token.type != "space":
                         raise Exception("Invalid syntax")
                 elif next_token.type == "-":
                     next_token = tokenizer.selectNext()
                     if next_token.type == "number":
                         result -= int(next_token.value) # subtract the token value
-                    else:
+                    elif next_token.type != "space":
                         raise Exception("Invalid syntax")
                 next_token = tokenizer.selectNext()
             return result

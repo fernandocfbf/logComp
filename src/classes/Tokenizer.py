@@ -31,7 +31,9 @@ class Tokenizer:
                         break
             self.actual = Token("number", number)
         else:
-            raise Exception("Character didn't recognize") 
+            raise Exception("Character didn't recognize")
+
+        print('self ', self.actual.value) 
         return self.actual
 
  
