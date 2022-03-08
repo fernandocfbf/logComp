@@ -19,7 +19,8 @@ class Tokenizer:
         current_token = self.origin[self.position]
         if current_token in TOKENS:
             self.position += 1
-            self.actual = Token(TOKENS[current_token], "")
+            if(current_token != "space"):
+                self.actual = Token(TOKENS[current_token], "")
         elif current_token.isnumeric():
             number = current_token
             self.position += 1
@@ -33,7 +34,6 @@ class Tokenizer:
         else:
             raise Exception("Character didn't recognize")
 
-        print('self ', self.actual.value) 
         return self.actual
 
  
