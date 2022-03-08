@@ -16,11 +16,22 @@ class Tokenizer:
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
+
+        if self.origin[self.position] == " " :
+            self.position += 1
+            if (self.position < len(self.origin)):
+                while (self.origin[self.position] == " "):
+                    self.position += 1
+                    if self.position >= len(self.origin):
+                        break
+                if (self.origin[self.position].isnumeric() and self.actual.type == "number"):
+                    raise Exception("Invalid syntax")
+
         current_token = self.origin[self.position]
         if current_token in TOKENS:
             self.position += 1
-            if(current_token != "space"):
-                self.actual = Token(TOKENS[current_token], "")
+            self.actual = Token(TOKENS[current_token], "")
+
         elif current_token.isnumeric():
             number = current_token
             self.position += 1
@@ -33,7 +44,6 @@ class Tokenizer:
             self.actual = Token("number", number)
         else:
             raise Exception("Character didn't recognize")
-
         return self.actual
 
  

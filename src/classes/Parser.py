@@ -21,13 +21,13 @@ class Parser():
                     next_token = tokenizer.selectNext()
                     if next_token.type == "number":
                         result += int(next_token.value) # sum the token value
-                    elif next_token.type != "space":
+                    else:
                         raise Exception("Invalid syntax")
                 elif next_token.type == "-":
                     next_token = tokenizer.selectNext()
                     if next_token.type == "number":
                         result -= int(next_token.value) # subtract the token value
-                    elif next_token.type != "space":
+                    else:
                         raise Exception("Invalid syntax")
                 next_token = tokenizer.selectNext()
             return result
@@ -40,7 +40,6 @@ class Parser():
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''
-        expression = expression.replace(" ", "")
         tokens = Tokenizer(expression, 0, Token('number', expression[0]))
         final_result = Parser.parseExpression(tokens)
         return final_result
