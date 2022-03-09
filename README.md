@@ -3,4 +3,4 @@
 
 Diagrama sintático:
 
-![image](https://user-images.githubusercontent.com/49531192/155396359-07813eb2-2980-42ba-80e3-8aae5e8d0428.png)
+![image](https://user-images.githubusercontent.com/49531192/157520271-bc4884e7-470c-40fd-aa05-25182407df40.png))
