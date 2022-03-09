@@ -1,4 +1,4 @@
-from src.constants.tokens import TOKENS
+from src.constants.tokens import ALL_TOKENS
 from src.classes.Token import Token
 
 class Tokenizer:
@@ -28,9 +28,9 @@ class Tokenizer:
                     raise Exception("Invalid syntax")
 
         current_token = self.origin[self.position]
-        if current_token in TOKENS:
+        if current_token in ALL_TOKENS:
             self.position += 1
-            self.actual = Token(TOKENS[current_token], "")
+            self.actual = Token(ALL_TOKENS[current_token], "")
 
         elif current_token.isnumeric():
             number = current_token
