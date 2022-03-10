@@ -52,6 +52,24 @@ class Parser():
                 result -= Parser.parseTerm(tokenizer)
 
         return result
+
+
+    def clean_comments(text):
+        '''
+        input: string to be cleaned
+        output: string without comments
+        description: clean all comments (/* /*)
+        '''
+        parse_text = text
+        without_comments = False
+        while without_comments == False:
+            begin = int(parse_text.find("/*"))
+            end = int(parse_text.find("*/"))
+            if (begin != end):
+                parse_text = parse_text.replace(parse_text[begin:end+2], "")
+            else:
+                without_comments = True
+        return parse_text
     
     def run(expression):
         '''
@@ -59,7 +77,8 @@ class Parser():
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''
-        tokens = Tokenizer(expression, 0, Token('number', expression[0]))
+        parse_expression = Parser.clean_comments(expression)
+        tokens = Tokenizer(parse_expression, 0, Token('number', parse_expression[0]))
         tokens.selectNext()
         final_result = Parser.parseExpression(tokens)
         return final_result
