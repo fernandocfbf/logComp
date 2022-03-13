@@ -16,7 +16,6 @@ class Tokenizer:
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
-
         if self.origin[self.position] == " " :
             self.position += 1
             if (self.position < len(self.origin)):
@@ -24,21 +23,16 @@ class Tokenizer:
                     self.position += 1
                     if self.position >= len(self.origin):
                         break
-
-                # is necessary to check again in case of space at the end of the expression
-                if (self.position < len(self.origin)):
+                if (self.position < len(self.origin)): # is necessary to check again in case of space at the end of the expression
                     if (self.origin[self.position].isnumeric() and self.actual.type == "number"):
                         raise Exception("Invalid syntax")
-                # if the expression ended, return EOF
-                else:
-                    self.actual = Token("EOF", "")
-                    return self.actual
-
+            if (self.position >= len(self.origin)):  # if the expression ended, return EOF
+                self.actual = Token("EOF", "")
+                return self.actual
         current_token = self.origin[self.position]
         if current_token in ALL_TOKENS:
             self.position += 1
             self.actual = Token(ALL_TOKENS[current_token], "")
-
         elif current_token.isnumeric():
             number = current_token
             self.position += 1
