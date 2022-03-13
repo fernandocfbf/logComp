@@ -13,6 +13,7 @@ class Tokenizer:
         output: Token type object (self.actual)
         description: read the next token from the input and update the actual and position atributes
         '''
+        print(self.actual.type, self.actual.value )
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
@@ -24,8 +25,15 @@ class Tokenizer:
                     self.position += 1
                     if self.position >= len(self.origin):
                         break
-                if (self.origin[self.position].isnumeric() and self.actual.type == "number"):
-                    raise Exception("Invalid syntax")
+
+                # is necessary to check again in case of space at the end of the expression
+                if (self.position < len(self.origin)):
+                    if (self.origin[self.position].isnumeric() and self.actual.type == "number"):
+                        raise Exception("Invalid syntax")
+                # if the expression ended, return EOF
+                else:
+                    self.actual = Token("EOF", "")
+                    return self.actual
 
         current_token = self.origin[self.position]
         if current_token in ALL_TOKENS:

@@ -64,8 +64,12 @@ class Parser():
         while without_comments == False:
             begin = int(parse_text.find("/*"))
             end = int(parse_text.find("*/"))
-            if (begin != end):
+            if (begin != end) and (begin == -1 or end == -1):
+                without_comments = True
+                raise Exception("Invalid comment syntax")
+            elif (begin != end):
                 parse_text = parse_text.replace(parse_text[begin:end+2], "")
+            
             else:
                 without_comments = True
         return parse_text
@@ -77,6 +81,7 @@ class Parser():
         description: receives an expression in string format and calculates the result 
         '''
         parse_expression = Parser.clean_comments(expression)
+        print(parse_expression)
         tokens = Tokenizer(parse_expression, 0, Token(None, parse_expression[0]))
         tokens.selectNext()
         final_result = Parser.parseExpression(tokens)
