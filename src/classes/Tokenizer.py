@@ -13,7 +13,6 @@ class Tokenizer:
         output: Token type object (self.actual)
         description: read the next token from the input and update the actual and position atributes
         '''
-        print(self.actual.type, self.actual.value )
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
