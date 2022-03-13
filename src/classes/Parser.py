@@ -42,15 +42,13 @@ class Parser():
             Performs sum and subtraction only 
         '''
         result = Parser.parseTerm(tokenizer)
-        current_token = tokenizer.actual
-        while current_token.type in EXPRESSION_TOKENS:
-            if current_token.type == "+":
+        while tokenizer.actual.type in EXPRESSION_TOKENS:
+            if tokenizer.actual.type == "+":
                 current_token = tokenizer.selectNext()
                 result += Parser.parseTerm(tokenizer)
-            elif current_token.type == "-":
+            elif tokenizer.actual.type == "-":
                 current_token = tokenizer.selectNext()
                 result -= Parser.parseTerm(tokenizer)
-
         return result
 
 
@@ -77,7 +75,8 @@ class Parser():
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''
-        parse_expression = Parser.clean_comments(expression)
+        #parse_expression = Parser.clean_comments(expression)
+        parse_expression = expression
         tokens = Tokenizer(parse_expression, 0, Token('number', parse_expression[0]))
         tokens.selectNext()
         final_result = Parser.parseExpression(tokens)
