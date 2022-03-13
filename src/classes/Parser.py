@@ -1,3 +1,4 @@
+from ast import parse
 from src.classes.Token import Token
 from src.classes.Tokenizer import Tokenizer
 from src.constants.tokens import ALL_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
@@ -75,9 +76,8 @@ class Parser():
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''
-        #parse_expression = Parser.clean_comments(expression)
-        parse_expression = expression
-        tokens = Tokenizer(parse_expression, 0, Token('number', parse_expression[0]))
+        parse_expression = Parser.clean_comments(expression)
+        tokens = Tokenizer(parse_expression, 0, Token(None, parse_expression[0]))
         tokens.selectNext()
         final_result = Parser.parseExpression(tokens)
         return final_result
