@@ -81,7 +81,6 @@ class Parser():
         description: receives an expression in string format and calculates the result 
         '''
         parse_expression = Parser.clean_comments(expression)
-        print(parse_expression)
         tokens = Tokenizer(parse_expression, 0, Token(None, parse_expression[0]))
         tokens.selectNext()
         final_result = Parser.parseExpression(tokens)
