@@ -3,7 +3,8 @@
 
 Diagrama sintático:
 
-![image](https://user-images.githubusercontent.com/49531192/157520271-bc4884e7-470c-40fd-aa05-25182407df40.png))
+![image](https://user-images.githubusercontent.com/49531192/158675759-2d4c10c0-b0f7-4bed-b61f-5513f9b5c770.png)
+
 
 EBNF:
 EXPRESSION = NUMBER, {("+" | "-" | "*" | "/"), NUMBER} ;
