@@ -29,10 +29,10 @@ class Parser():
             return node
         elif tokenizer.actual.type == "(":
             tokenizer.selectNext()
-            result = Parser.parseExpression(tokenizer)
+            int_result = Parser.parseExpression(tokenizer)
             if tokenizer.actual.type == ")":
                 tokenizer.selectNext()
-                return result
+                return int_result
             else:
                 raise Exception("Invalid syntax")
         else:
@@ -49,10 +49,10 @@ class Parser():
         while tokenizer.actual.type in TERM_TOKENS:
             if tokenizer.actual.type == "*":
                 tokenizer.selectNext()
-                node = BinOp("*", [node, Parser.parseTerm(tokenizer)])
+                node = BinOp("*", [node, Parser.parseFactor(tokenizer)])
             elif tokenizer.actual.type == "/":
                 tokenizer.selectNext()
-                node = BinOp("/", [node, Parser.parseTerm(tokenizer)])
+                node = BinOp("/", [node, Parser.parseFactor(tokenizer)])
         return node
 
     def parseExpression(tokenizer):

@@ -3,5 +3,6 @@ class UnOp(Node):
 
     #@Override
     def Evaluate(self):
-        node1 = self.children[0].Evaluate()
-        return node1
+        if self.variant == "-":
+            return - self.children[0].Evaluate()
+        return self.children[0].Evaluate()
