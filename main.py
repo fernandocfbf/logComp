@@ -2,7 +2,10 @@ import sys
 
 from src.classes.Parser import Parser
 
-expression = sys.argv[1]
-exp_result = Parser.run(expression) # calculates exp
+file = sys.argv[1]
+with open(file) as f:
+    exp = f.read().replace('"', "")
+    exp_result = Parser.run(exp) # calculates exp
+    
 if exp_result != None:
-    print(int(exp_result))
+    print(int(exp_result.Evaluate()))

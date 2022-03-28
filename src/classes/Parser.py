@@ -1,3 +1,6 @@
+from src.classes.BinOp import BinOp
+from src.classes.UnOp import UnOp
+from src.classes.IntVal import IntVal
 from src.classes.Token import Token
 from src.classes.Tokenizer import Tokenizer
 from src.constants.tokens import ALL_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
@@ -11,26 +14,29 @@ class Parser():
         output: number (int)
         description: computes non-binary tokens (-, +)
         '''
-        result = 0
+        int_result = 0
         if tokenizer.actual.type == "number":
-            result = int(tokenizer.actual.value)
+            int_result = int(tokenizer.actual.value)
             tokenizer.selectNext()
+            return IntVal(int_result, [])
         elif tokenizer.actual.type == "+":
             tokenizer.selectNext()
-            result += Parser.parseFactor(tokenizer)
+            node = UnOp("+", [Parser.parseFactor(tokenizer)])
+            return node
         elif tokenizer.actual.type == "-":
             tokenizer.selectNext()
-            result -= Parser.parseFactor(tokenizer)
+            node = UnOp("-", [Parser.parseFactor(tokenizer)])
+            return node
         elif tokenizer.actual.type == "(":
             tokenizer.selectNext()
             result = Parser.parseExpression(tokenizer)
             if tokenizer.actual.type == ")":
                 tokenizer.selectNext()
+                return result
             else:
                 raise Exception("Invalid syntax")
         else:
             raise Exception("Invalid expression")
-        return result
         
     def parseTerm(tokenizer):
         '''
@@ -39,32 +45,32 @@ class Parser():
         description: read all the tokens for the expression and calculates the result.
             Performs times and division only
         '''
-        result = Parser.parseFactor(tokenizer)
+        node = Parser.parseFactor(tokenizer)
         while tokenizer.actual.type in TERM_TOKENS:
             if tokenizer.actual.type == "*":
                 tokenizer.selectNext()
-                result *= Parser.parseFactor(tokenizer)
+                node = BinOp("*", [node, Parser.parseTerm(tokenizer)])
             elif tokenizer.actual.type == "/":
                 tokenizer.selectNext()
-                result /= Parser.parseFactor(tokenizer)
-        return result
+                node = BinOp("/", [node, Parser.parseTerm(tokenizer)])
+        return node
 
     def parseExpression(tokenizer):
         '''
         input: Tokenizer object
-        output: number (int)
+        output: Node object (Node)
         description: read all the tokens for the expression and calculates the result.
             Performs sum and subtraction only 
         '''
-        result = Parser.parseTerm(tokenizer)
+        node = Parser.parseTerm(tokenizer)
         while tokenizer.actual.type in EXPRESSION_TOKENS:
             if tokenizer.actual.type == "+":
                 tokenizer.selectNext()
-                result += Parser.parseTerm(tokenizer)
+                node = BinOp("+", [node, Parser.parseTerm(tokenizer)])
             elif tokenizer.actual.type == "-":
                 tokenizer.selectNext()
-                result -= Parser.parseTerm(tokenizer)
-        return result
+                node = BinOp("-", [node, Parser.parseTerm(tokenizer)])
+        return node
 
 
     def clean_comments(text):
