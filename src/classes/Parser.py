@@ -2,6 +2,7 @@ from lib2to3.pgen2.tokenize import tokenize
 from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.IntVal import IntVal
+from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Tokenizer import Tokenizer
 from src.constants.tokens import ALL_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
@@ -88,8 +89,11 @@ class Parser():
         '''
         if tokenizer.actual.type == "{":
             tokenizer.selectNext() 
+            block = Block("", list())
             while (tokenizer.actual.type != "}"):
-                Parser.parseStatement(tokenizer)
+                node = Parser.parseStatement(tokenizer)
+                block.children.append(node)
+            return block
         else:
             raise Exception("Invalid code syntax")
 
