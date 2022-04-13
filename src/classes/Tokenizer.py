@@ -1,4 +1,4 @@
-from src.constants.tokens import ALL_TOKENS
+from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN
 from src.classes.Token import Token
 
 class Tokenizer:
@@ -16,10 +16,10 @@ class Tokenizer:
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
-        if self.origin[self.position] == " " :
+        if self.origin[self.position] in IGNORE_TOKEN:
             self.position += 1
             if (self.position < len(self.origin)):
-                while (self.origin[self.position] == " "):
+                while (self.origin[self.position] in IGNORE_TOKEN):
                     self.position += 1
                     if self.position >= len(self.origin):
                         break

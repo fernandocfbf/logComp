@@ -1,3 +1,4 @@
+from lib2to3.pgen2.tokenize import tokenize
 from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.IntVal import IntVal
@@ -71,6 +72,26 @@ class Parser():
                 tokenizer.selectNext()
                 node = BinOp("-", [node, Parser.parseTerm(tokenizer)])
         return node
+
+    def parseStatement(tokenizer):
+        '''
+        input:
+        output:
+        description:
+        '''
+
+    def parseBlock(tokenizer):
+        '''
+        input: Tokenizer object
+        output:
+        description: reads { and } and prints the final result
+        '''
+        if tokenizer.actual.type == "{":
+            tokenizer.selectNext() 
+            while (tokenizer.actual.type != "}"):
+                Parser.parseStatement(tokenizer)
+        else:
+            raise Exception("Invalid code syntax")
 
 
     def clean_comments(text):
