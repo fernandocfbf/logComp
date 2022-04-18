@@ -1,9 +1,12 @@
-from lib2to3.pgen2.tokenize import tokenize
+from src.classes.Identifier import Identifier
+from src.classes.Print import Print
 from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
+from src.classes.NoOp import NoOp
 from src.classes.IntVal import IntVal
 from src.classes.Block import Block
 from src.classes.Token import Token
+from src.classes.Assignment import Assignment
 from src.classes.Tokenizer import Tokenizer
 from src.constants.tokens import ALL_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
 
@@ -80,7 +83,33 @@ class Parser():
         output:
         description:
         '''
-
+        if (tokenizer.actual.type == 'identifier'):
+            identifier = Identifier(tokenizer.actual.value, [])
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == "="):
+                result = Parser.parseExpression(tokenizer)
+                if (tokenizer.actual.type == ";"):
+                    tokenizer.selectNext()
+                    return Assignment(identifier.variant, [identifier, result])
+                raise Exception("Missing type ;")
+            raise Exception("Invalid syntax")
+        if (tokenizer.actual.type == 'print'):
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == ')'):
+                tokenizer.selectNext()
+                result = Parser.parseExpression()
+                if (tokenizer.actual.type == ')'):
+                    tokenizer.selectNext()
+                    if (tokenizer.actual.type == ";"):
+                        tokenizer.selectNext()
+                        return Print('print', [result])
+                    raise Exception("Missing type ;")
+            raise Exception("Invalid syntax")
+        elif (tokenizer.actual.type == ";"):
+            tokenizer.selectNext()
+            return NoOp("", [])
+        raise Exception("Invalid syntax")
+        
     def parseBlock(tokenizer):
         '''
         input: Tokenizer object

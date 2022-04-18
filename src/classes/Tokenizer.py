@@ -1,3 +1,5 @@
+import string
+from constants.reserved import RESERVED_WORDS
 from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN
 from src.classes.Token import Token
 
@@ -13,9 +15,11 @@ class Tokenizer:
         output: Token type object (self.actual)
         description: read the next token from the input and update the actual and position atributes
         '''
+
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
+
         if self.origin[self.position] in IGNORE_TOKEN:
             self.position += 1
             if (self.position < len(self.origin)):
@@ -30,9 +34,11 @@ class Tokenizer:
                 self.actual = Token("EOF", "")
                 return self.actual
         current_token = self.origin[self.position]
+
         if current_token in ALL_TOKENS:
             self.position += 1
             self.actual = Token(ALL_TOKENS[current_token], "")
+
         elif current_token.isnumeric():
             number = current_token
             self.position += 1
@@ -43,6 +49,20 @@ class Tokenizer:
                     if self.position >= len(self.origin):
                         break
             self.actual = Token("number", number)
+
+        elif current_token.isalpha():
+            variable = current_token
+            self.position += 1
+            if (self.position < len(self.origin)):
+                while (self.origin[self.position].isalpha() or self.origin[self.position].isnumeric() or self.origin[self.position] == '_'):
+                    variable += self.origin[self.position]
+                    self.position += 1
+                    if self.position >= len(self.origin):
+                        break
+            if variable in RESERVED_WORDS.keys():
+                return Token("reserved", RESERVED_WORDS[string])
+            return Token("identifier", variable)
+
         else:
             raise Exception("Character didn't recognize")
         return self.actual
