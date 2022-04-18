@@ -24,6 +24,10 @@ class Parser():
             int_result = int(tokenizer.actual.value)
             tokenizer.selectNext()
             return IntVal(int_result, [])
+        elif tokenizer.actual.type == "identifier":
+            identifier = Identifier(tokenizer.actual.value, [])
+            tokenizer.selectNext()
+            return identifier
         elif tokenizer.actual.type == "+":
             tokenizer.selectNext()
             node = UnOp("+", [Parser.parseFactor(tokenizer)])
@@ -125,7 +129,6 @@ class Parser():
             return block
         else:
             raise Exception("Invalid code syntax")
-
 
     def clean_comments(text):
         '''
