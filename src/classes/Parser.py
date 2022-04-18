@@ -79,9 +79,9 @@ class Parser():
 
     def parseStatement(tokenizer):
         '''
-        input:
-        output:
-        description:
+        input: Tokenizer object
+        output: Token object (Assignment, Print or NoOp)
+        description: computes assignments and print functions
         '''
         if (tokenizer.actual.type == 'identifier'):
             identifier = Identifier(tokenizer.actual.value, [])
