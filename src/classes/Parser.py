@@ -1,3 +1,4 @@
+from gzip import READ
 from src.classes.Identifier import Identifier
 from src.classes.Print import Print
 from src.classes.BinOp import BinOp
@@ -87,24 +88,28 @@ class Parser():
         output: Token object (Assignment, Print or NoOp)
         description: computes assignments and print functions
         '''
+        print("THERE -> ", tokenizer.actual.type)
         if (tokenizer.actual.type == 'identifier'):
             identifier = Identifier(tokenizer.actual.value, [])
             tokenizer.selectNext()
             if (tokenizer.actual.type == "="):
+                tokenizer.selectNext()
                 result = Parser.parseExpression(tokenizer)
                 if (tokenizer.actual.type == ";"):
                     tokenizer.selectNext()
                     return Assignment(identifier.variant, [identifier, result])
                 raise Exception("Missing type ;")
-            raise Exception("Invalid syntax")
-        if (tokenizer.actual.type == 'print'):
+            else:
+                raise Exception("Invalid syntax")
+        if (tokenizer.actual.value == 'print'):
             tokenizer.selectNext()
-            if (tokenizer.actual.type == ')'):
+            if (tokenizer.actual.type == '('):
                 tokenizer.selectNext()
-                result = Parser.parseExpression()
+                result = Parser.parseExpression(tokenizer)
                 if (tokenizer.actual.type == ')'):
                     tokenizer.selectNext()
                     if (tokenizer.actual.type == ";"):
+                        print("GOT")
                         tokenizer.selectNext()
                         return Print('print', [result])
                     raise Exception("Missing type ;")
@@ -120,12 +125,13 @@ class Parser():
         output:
         description: reads { and } and prints the final result
         '''
+        block = Block("", list())
         if tokenizer.actual.type == "{":
             tokenizer.selectNext() 
-            block = Block("", list())
             while (tokenizer.actual.type != "}"):
                 node = Parser.parseStatement(tokenizer)
                 block.children.append(node)
+            tokenizer.selectNext()
             return block
         else:
             raise Exception("Invalid code syntax")
@@ -157,10 +163,10 @@ class Parser():
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''
-        parse_expression = Parser.clean_comments(expression)
-        tokens = Tokenizer(parse_expression, 0, Token(None, parse_expression[0]))
+        cleaned_expression = Parser.clean_comments(expression)
+        tokens = Tokenizer(cleaned_expression, 0, Token(None, cleaned_expression[0]))
         tokens.selectNext()
-        final_result = Parser.parseExpression(tokens)
+        final_result = Parser.parseBlock(tokens)
         if(tokens.actual.type != "EOF"):
             raise Exception("Invalid syntax")
         return final_result

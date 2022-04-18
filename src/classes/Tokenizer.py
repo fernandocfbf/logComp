@@ -1,5 +1,4 @@
-import string
-from constants.reserved import RESERVED_WORDS
+from src.constants.reserved import RESERVED_WORDS
 from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN
 from src.classes.Token import Token
 
@@ -15,7 +14,6 @@ class Tokenizer:
         output: Token type object (self.actual)
         description: read the next token from the input and update the actual and position atributes
         '''
-
         if self.position >= len(self.origin):
             self.actual = Token("EOF", "")
             return self.actual
@@ -60,8 +58,9 @@ class Tokenizer:
                     if self.position >= len(self.origin):
                         break
             if variable in RESERVED_WORDS.keys():
-                return Token("reserved", RESERVED_WORDS[string])
-            return Token("identifier", variable)
+                self.actual = Token("reserved", RESERVED_WORDS[variable])
+            else:
+                self.actual = Token("identifier", variable)
 
         else:
             raise Exception("Character didn't recognize")
