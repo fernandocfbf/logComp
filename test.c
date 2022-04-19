@@ -1,4 +1,5 @@
-{
-x = 1*2;
-printf(x);
-}
+{printf(1+1);
+printf(1-1);
+printf(1*1);
+printf(1/1);
+printf(---1);}
