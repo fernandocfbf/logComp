@@ -88,7 +88,6 @@ class Parser():
         output: Token object (Assignment, Print or NoOp)
         description: computes assignments and print functions
         '''
-        print("THERE -> ", tokenizer.actual.type)
         if (tokenizer.actual.type == 'identifier'):
             identifier = Identifier(tokenizer.actual.value, [])
             tokenizer.selectNext()
@@ -109,7 +108,6 @@ class Parser():
                 if (tokenizer.actual.type == ')'):
                     tokenizer.selectNext()
                     if (tokenizer.actual.type == ";"):
-                        print("GOT")
                         tokenizer.selectNext()
                         return Print('print', [result])
                     raise Exception("Missing type ;")
