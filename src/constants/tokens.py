@@ -1,6 +1,7 @@
 EXPRESSION_TOKENS = {
     "+": "+",
     "-": "-",
+    "||": "||"
 }
 
 TERM_TOKENS = {

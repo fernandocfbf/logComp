@@ -70,9 +70,8 @@ class Parser():
     def parseExpression(tokenizer):
         '''
         input: Tokenizer object
-        output: Node object (Node)
-        description: read all the tokens for the expression and calculates the result.
-            Performs sum and subtraction only 
+        output: BinOp object
+        description: performs sum, subtraction and && 
         '''
         node = Parser.parseTerm(tokenizer)
         while tokenizer.actual.type in EXPRESSION_TOKENS:
@@ -82,6 +81,9 @@ class Parser():
             elif tokenizer.actual.type == "-":
                 tokenizer.selectNext()
                 node = BinOp("-", [node, Parser.parseTerm(tokenizer)])
+            elif tokenizer.actual.type == "||":
+                tokenizer.selectNext()
+                node = BinOp("||", [node, Parser.parseTerm(tokenizer)])
         return node
 
     def relExpression(tokenizer):
