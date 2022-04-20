@@ -17,8 +17,8 @@ class Parser():
     def parseFactor(tokenizer):
         '''
         input: Tokenizer object
-        output: number (int)
-        description: computes non-binary tokens (-, +)
+        output: UnOp / IntVal / Identifier object
+        description: computes non-binary tokens (-, +, (, !) and function scanf
         '''
         int_result = 0
         if tokenizer.actual.type == "number":
@@ -37,6 +37,10 @@ class Parser():
             tokenizer.selectNext()
             node = UnOp("-", [Parser.parseFactor(tokenizer)])
             return node
+        elif tokenizer.actual.type == "!":
+            tokenizer.selectNext()
+            node = UnOp("!", [Parser.relExpression(tokenizer)])
+            return node
         elif tokenizer.actual.type == "(":
             tokenizer.selectNext()
             int_result = Parser.parseExpression(tokenizer)
@@ -45,6 +49,14 @@ class Parser():
                 return int_result
             else:
                 raise Exception("Invalid syntax")
+        elif tokenizer.actual.type == "scanf":
+            tokenizer.selectNext()
+            if tokenizer.actual.type == "(":
+                tokenizer.selectNext()
+                if tokenizer.actual.type == ")":
+                    tokenizer.selectNext()
+                    return # COLOCAR CLASSE SCANF AQUI
+            raise Exception("Invalid syntax")
         else:
             raise Exception("Invalid expression")
         
