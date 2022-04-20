@@ -9,7 +9,7 @@ from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
 from src.classes.Tokenizer import Tokenizer
-from src.constants.tokens import ALL_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
+from src.constants.tokens import RELEXPRESSION_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
 
 class Parser():
     tokens = None
@@ -51,9 +51,8 @@ class Parser():
     def parseTerm(tokenizer):
         '''
         input: Tokenizer object
-        output: number (int)
-        description: read all the tokens for the expression and calculates the result.
-            Performs times and division only
+        output: BinOp object
+        description: performs times, division and && condition
         '''
         node = Parser.parseFactor(tokenizer)
         while tokenizer.actual.type in TERM_TOKENS:
@@ -80,6 +79,25 @@ class Parser():
             elif tokenizer.actual.type == "-":
                 tokenizer.selectNext()
                 node = BinOp("-", [node, Parser.parseTerm(tokenizer)])
+        return node
+
+    def relExpression(tokenizer):
+        '''
+        input: Tokenizer object
+        output: BinOp object
+        description: performs ==, < and >
+        '''
+        node = Parser.parseExpression(tokenizer)
+        while tokenizer.actual.type in RELEXPRESSION_TOKENS:
+            if tokenizer.actual.type == "==":
+                tokenizer.selectNext()
+                node = BinOp("==", [node, Parser.parseExpression(tokenizer)])
+            elif tokenizer.actual.type == "<":
+                tokenizer.selectNext()
+                node = BinOp("<", [node, Parser.parseExpression(tokenizer)])
+            elif tokenizer.actual.type == ">":
+                tokenizer.selectNext()
+                node = BinOp(">", [node, Parser.parseExpression(tokenizer)])
         return node
 
     def parseStatement(tokenizer):
@@ -157,7 +175,7 @@ class Parser():
     
     def run(expression):
         '''
-        input: expression with the operations to be performed (string)
+        input: 
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''

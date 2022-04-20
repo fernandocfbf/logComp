@@ -1,3 +1,6 @@
 RESERVED_WORDS = {
-    "printf": "print"
+    "printf": "print",
+    "while": "while",
+    "if": "if",
+    "else": "else",
 }

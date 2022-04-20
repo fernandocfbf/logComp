@@ -6,7 +6,13 @@ EXPRESSION_TOKENS = {
 TERM_TOKENS = {
     "*": "*",
     "/": "/",
-    " ": " "
+    "&&": "&&"
+}
+
+RELEXPRESSION_TOKENS = {
+    "==": "==",
+    ">": ">",
+    "<": "<",
 }
 
 ALL_TOKENS ={
