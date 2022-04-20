@@ -62,6 +62,9 @@ class Parser():
             elif tokenizer.actual.type == "/":
                 tokenizer.selectNext()
                 node = BinOp("/", [node, Parser.parseFactor(tokenizer)])
+            elif tokenizer.actual.type == "&&":
+                tokenizer.selectNext()
+                node = BinOp("&&", [node, Parser.parseFactor(tokenizer)])
         return node
 
     def parseExpression(tokenizer):
