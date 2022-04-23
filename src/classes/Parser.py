@@ -160,7 +160,6 @@ class Parser():
                         stat = Parser.parseStatement(tokenizer)
                     return # COLOCAR CLASSE WHILE AQUI
             raise Exception("Invalid syntax")
-
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
             return NoOp("", [])
