@@ -128,7 +128,7 @@ class Parser():
             tokenizer.selectNext()
             if (tokenizer.actual.type == "="):
                 tokenizer.selectNext()
-                result = Parser.parseExpression(tokenizer)
+                result = Parser.relExpression(tokenizer)
                 if (tokenizer.actual.type == ";"):
                     tokenizer.selectNext()
                     return Assignment(identifier.variant, [identifier, result])
@@ -139,7 +139,7 @@ class Parser():
             tokenizer.selectNext()
             if (tokenizer.actual.type == '('):
                 tokenizer.selectNext()
-                result = Parser.parseExpression(tokenizer)
+                result = Parser.relExpression(tokenizer)
                 if (tokenizer.actual.type == ')'):
                     tokenizer.selectNext()
                     if (tokenizer.actual.type == ";"):
@@ -147,6 +147,20 @@ class Parser():
                         return Print('print', [result])
                     raise Exception("Missing type ;")
             raise Exception("Invalid syntax")
+        if(tokenizer.actual.value == 'while'):
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == '('):
+                tokenizer.selectNext()
+                result = Parser.relExpression(tokenizer)
+                if (tokenizer.actual.type == ')'):
+                    tokenizer.selectNext()
+                    stat = Parser.parseStatement(tokenizer)
+                    tokenizer.selectNext()
+                    if (tokenizer.actual.type == 'else'):
+                        stat = Parser.parseStatement(tokenizer)
+                    return # COLOCAR CLASSE WHILE AQUI
+            raise Exception("Invalid syntax")
+
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
             return NoOp("", [])
