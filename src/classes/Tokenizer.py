@@ -1,5 +1,5 @@
 from src.constants.reserved import RESERVED_WORDS
-from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN
+from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN, POSSIBLE_DUAL_TOKENS
 from src.classes.Token import Token
 
 class Tokenizer:
@@ -32,8 +32,16 @@ class Tokenizer:
                 self.actual = Token("EOF", "")
                 return self.actual
         current_token = self.origin[self.position]
+        
+        if current_token in POSSIBLE_DUAL_TOKENS:
+            dual_token = current_token
+            self.position += 1
+            while (self.origin[self.position] == current_token):
+                dual_token += current_token
+                self.position += 1
+            self.actual = Token(ALL_TOKENS[dual_token], "")
 
-        if current_token in ALL_TOKENS:
+        elif current_token in ALL_TOKENS:
             self.position += 1
             self.actual = Token(ALL_TOKENS[current_token], "")
 

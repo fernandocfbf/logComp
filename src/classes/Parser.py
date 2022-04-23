@@ -1,6 +1,9 @@
 from gzip import READ
 from src.classes.Identifier import Identifier
 from src.classes.Print import Print
+from src.classes.Scanf import Scanf
+from src.classes.While import While
+from src.classes.If import If
 from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.NoOp import NoOp
@@ -9,7 +12,7 @@ from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
 from src.classes.Tokenizer import Tokenizer
-from src.constants.tokens import ALL_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
+from src.constants.tokens import RELEXPRESSION_TOKENS, EXPRESSION_TOKENS, TERM_TOKENS
 
 class Parser():
     tokens = None
@@ -17,8 +20,8 @@ class Parser():
     def parseFactor(tokenizer):
         '''
         input: Tokenizer object
-        output: number (int)
-        description: computes non-binary tokens (-, +)
+        output: UnOp / IntVal / Identifier object
+        description: computes non-binary tokens (-, +, (, !) and function scanf
         '''
         int_result = 0
         if tokenizer.actual.type == "number":
@@ -37,6 +40,10 @@ class Parser():
             tokenizer.selectNext()
             node = UnOp("-", [Parser.parseFactor(tokenizer)])
             return node
+        elif tokenizer.actual.type == "!":
+            tokenizer.selectNext()
+            node = UnOp("!", [Parser.relExpression(tokenizer)])
+            return node
         elif tokenizer.actual.type == "(":
             tokenizer.selectNext()
             int_result = Parser.parseExpression(tokenizer)
@@ -45,15 +52,22 @@ class Parser():
                 return int_result
             else:
                 raise Exception("Invalid syntax")
+        elif tokenizer.actual.type == "scanf":
+            tokenizer.selectNext()
+            if tokenizer.actual.type == "(":
+                tokenizer.selectNext()
+                if tokenizer.actual.type == ")":
+                    tokenizer.selectNext()
+                    return Scanf('scanf', [])
+            raise Exception("Invalid syntax")
         else:
             raise Exception("Invalid expression")
         
     def parseTerm(tokenizer):
         '''
         input: Tokenizer object
-        output: number (int)
-        description: read all the tokens for the expression and calculates the result.
-            Performs times and division only
+        output: BinOp object
+        description: performs times, division and && condition
         '''
         node = Parser.parseFactor(tokenizer)
         while tokenizer.actual.type in TERM_TOKENS:
@@ -63,14 +77,16 @@ class Parser():
             elif tokenizer.actual.type == "/":
                 tokenizer.selectNext()
                 node = BinOp("/", [node, Parser.parseFactor(tokenizer)])
+            elif tokenizer.actual.type == "&&":
+                tokenizer.selectNext()
+                node = BinOp("&&", [node, Parser.parseFactor(tokenizer)])
         return node
 
     def parseExpression(tokenizer):
         '''
         input: Tokenizer object
-        output: Node object (Node)
-        description: read all the tokens for the expression and calculates the result.
-            Performs sum and subtraction only 
+        output: BinOp object
+        description: performs sum, subtraction and && 
         '''
         node = Parser.parseTerm(tokenizer)
         while tokenizer.actual.type in EXPRESSION_TOKENS:
@@ -80,6 +96,28 @@ class Parser():
             elif tokenizer.actual.type == "-":
                 tokenizer.selectNext()
                 node = BinOp("-", [node, Parser.parseTerm(tokenizer)])
+            elif tokenizer.actual.type == "||":
+                tokenizer.selectNext()
+                node = BinOp("||", [node, Parser.parseTerm(tokenizer)])
+        return node
+
+    def relExpression(tokenizer):
+        '''
+        input: Tokenizer object
+        output: BinOp object
+        description: performs ==, < and >
+        '''
+        node = Parser.parseExpression(tokenizer)
+        while tokenizer.actual.type in RELEXPRESSION_TOKENS:
+            if tokenizer.actual.type == "==":
+                tokenizer.selectNext()
+                node = BinOp("==", [node, Parser.parseExpression(tokenizer)])
+            elif tokenizer.actual.type == "<":
+                tokenizer.selectNext()
+                node = BinOp("<", [node, Parser.parseExpression(tokenizer)])
+            elif tokenizer.actual.type == ">":
+                tokenizer.selectNext()
+                node = BinOp(">", [node, Parser.parseExpression(tokenizer)])
         return node
 
     def parseStatement(tokenizer):
@@ -93,7 +131,7 @@ class Parser():
             tokenizer.selectNext()
             if (tokenizer.actual.type == "="):
                 tokenizer.selectNext()
-                result = Parser.parseExpression(tokenizer)
+                result = Parser.relExpression(tokenizer)
                 if (tokenizer.actual.type == ";"):
                     tokenizer.selectNext()
                     return Assignment(identifier.variant, [identifier, result])
@@ -104,7 +142,7 @@ class Parser():
             tokenizer.selectNext()
             if (tokenizer.actual.type == '('):
                 tokenizer.selectNext()
-                result = Parser.parseExpression(tokenizer)
+                result = Parser.relExpression(tokenizer)
                 if (tokenizer.actual.type == ')'):
                     tokenizer.selectNext()
                     if (tokenizer.actual.type == ";"):
@@ -112,6 +150,32 @@ class Parser():
                         return Print('print', [result])
                     raise Exception("Missing type ;")
             raise Exception("Invalid syntax")
+        if(tokenizer.actual.value == 'while'):
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == '('):
+                tokenizer.selectNext()
+                result = Parser.relExpression(tokenizer)
+                if (tokenizer.actual.type == ')'):
+                    tokenizer.selectNext()
+                    stat = Parser.parseStatement(tokenizer)
+                    return While('while', [result, stat])
+            raise Exception("Invalid syntax")
+        if(tokenizer.actual.value == 'if'):
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == '('):
+                tokenizer.selectNext()
+                result = Parser.relExpression(tokenizer)
+                if (tokenizer.actual.type == ')'):
+                    tokenizer.selectNext()
+                    stat1 = Parser.parseStatement(tokenizer)
+                    if (tokenizer.actual.value == 'else'):
+                        tokenizer.selectNext()
+                        stat2 = Parser.parseStatement(tokenizer)
+                        return If('if', [result, stat1, stat2])
+                    return If('if', [result, stat1])
+            raise Exception("Invalid syntax")
+        if (tokenizer.actual.type == '{'):
+            return Parser.parseBlock(tokenizer)
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
             return NoOp("", [])
@@ -157,7 +221,7 @@ class Parser():
     
     def run(expression):
         '''
-        input: expression with the operations to be performed (string)
+        input: 
         output: expression result (int)
         description: receives an expression in string format and calculates the result 
         '''

@@ -1,5 +1,9 @@
-{printf(1+1);
-printf(1-1);
-printf(1*1);
-printf(1/1);
-printf(---1);}
+{
+    x = 1;
+    y = 3;
+    if (x > y){
+        printf(x);
+    } else{
+        printf(y);
+    }
+}
