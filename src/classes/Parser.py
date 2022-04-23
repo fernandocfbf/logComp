@@ -1,6 +1,7 @@
 from gzip import READ
 from src.classes.Identifier import Identifier
 from src.classes.Print import Print
+from src.classes.Scanf import Scanf
 from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.NoOp import NoOp
@@ -55,7 +56,7 @@ class Parser():
                 tokenizer.selectNext()
                 if tokenizer.actual.type == ")":
                     tokenizer.selectNext()
-                    return # COLOCAR CLASSE SCANF AQUI
+                    return Scanf('scanf', [])
             raise Exception("Invalid syntax")
         else:
             raise Exception("Invalid expression")
