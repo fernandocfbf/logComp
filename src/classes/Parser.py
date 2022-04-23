@@ -42,11 +42,11 @@ class Parser():
             return node
         elif tokenizer.actual.type == "!":
             tokenizer.selectNext()
-            node = UnOp("!", [Parser.relExpression(tokenizer)])
+            node = UnOp("!", [Parser.parseFactor(tokenizer)])
             return node
         elif tokenizer.actual.type == "(":
             tokenizer.selectNext()
-            int_result = Parser.parseExpression(tokenizer)
+            int_result = Parser.relExpression(tokenizer)
             if tokenizer.actual.type == ")":
                 tokenizer.selectNext()
                 return int_result
