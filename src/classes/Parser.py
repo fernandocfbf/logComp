@@ -179,7 +179,6 @@ class Parser():
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
             return NoOp("", [])
-        print(tokenizer.actual.type, tokenizer.actual.value)
         raise Exception("Invalid syntax")
         
     def parseBlock(tokenizer):
