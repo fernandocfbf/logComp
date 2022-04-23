@@ -13,5 +13,15 @@ class BinOp(Node):
             return int(node1*node2)
         elif self.variant == "/":
             return int(node1/node2)
+        elif self.variant == "==":
+            return int(node1) == int(node2)
+        elif self.variant == "<":
+            return int(node1) < int(node2)
+        elif self.variant == ">":
+            return int(node1) > int(node2)
+        elif self.variant == "||":
+            return node1 or node2
+        elif self.variant == "&&":
+            return node1 and node2
         else:
             raise Exception("Invalid token")

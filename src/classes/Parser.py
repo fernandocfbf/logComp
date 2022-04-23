@@ -2,6 +2,8 @@ from gzip import READ
 from src.classes.Identifier import Identifier
 from src.classes.Print import Print
 from src.classes.Scanf import Scanf
+from src.classes.While import While
+from src.classes.If import If
 from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.NoOp import NoOp
@@ -156,14 +158,28 @@ class Parser():
                 if (tokenizer.actual.type == ')'):
                     tokenizer.selectNext()
                     stat = Parser.parseStatement(tokenizer)
-                    tokenizer.selectNext()
-                    if (tokenizer.actual.type == 'else'):
-                        stat = Parser.parseStatement(tokenizer)
-                    return # COLOCAR CLASSE WHILE AQUI
+                    return While('while', [result, stat])
             raise Exception("Invalid syntax")
+        if(tokenizer.actual.value == 'if'):
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == '('):
+                tokenizer.selectNext()
+                result = Parser.relExpression(tokenizer)
+                if (tokenizer.actual.type == ')'):
+                    tokenizer.selectNext()
+                    stat1 = Parser.parseStatement(tokenizer)
+                    if (tokenizer.actual.value == 'else'):
+                        tokenizer.selectNext()
+                        stat2 = Parser.parseStatement(tokenizer)
+                        return If('if', [result, stat1, stat2])
+                    return If('if', [result, stat1])
+            raise Exception("Invalid syntax")
+        if (tokenizer.actual.type == '{'):
+            return Parser.parseBlock(tokenizer)
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
             return NoOp("", [])
+        print(tokenizer.actual.type, tokenizer.actual.value)
         raise Exception("Invalid syntax")
         
     def parseBlock(tokenizer):
