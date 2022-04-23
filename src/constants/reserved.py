@@ -3,4 +3,5 @@ RESERVED_WORDS = {
     "while": "while",
     "if": "if",
     "else": "else",
+    "scanf": "scanf",
 }

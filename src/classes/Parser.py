@@ -52,7 +52,7 @@ class Parser():
                 return int_result
             else:
                 raise Exception("Invalid syntax")
-        elif tokenizer.actual.type == "scanf":
+        elif tokenizer.actual.value == "scanf":
             tokenizer.selectNext()
             if tokenizer.actual.type == "(":
                 tokenizer.selectNext()
