@@ -8,6 +8,7 @@ from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.NoOp import NoOp
 from src.classes.IntVal import IntVal
+from src.classes.StrVal import StrVal
 from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
@@ -28,6 +29,10 @@ class Parser():
             int_result = int(tokenizer.actual.value)
             tokenizer.selectNext()
             return IntVal(int_result, [])
+        elif tokenizer.actual.type == "string":
+            str_result = str(tokenizer.actual.value)
+            tokenizer.selectNext()
+            return StrVal(str_result, [])
         elif tokenizer.actual.type == "identifier":
             identifier = Identifier(tokenizer.actual.value, [])
             tokenizer.selectNext()
