@@ -159,16 +159,21 @@ class Parser():
                         return Print('print', [result])
                     raise Exception("Missing type ;")
             raise Exception("Invalid syntax")
-        if (tokenizer.actual.value == 'type'):
+        if (tokenizer.actual.type == 'type'):
+            currentType = tokenizer.actual.value
             tokenizer.selectNext()
-            allIdent = [Identifier(tokenizer.actual.value, [])]
-            while (tokenizer.actual.value == ","):
+            if (tokenizer.actual.type == 'identifier'):
+                allIdent = [(currentType, tokenizer.actual.value)]
                 tokenizer.selectNext()
-                allIdent.append(Identifier(tokenizer.actual.value, []))
-                tokenizer.selectNext()
-            if (tokenizer.actual.type == ";"):
-                tokenizer.selectNext()
-                return VarDec('vardec', allIdent)
+                while (tokenizer.actual.type == ","):
+                    tokenizer.selectNext()
+                    allIdent.append((currentType, tokenizer.actual.value))
+                    tokenizer.selectNext()
+                if (tokenizer.actual.type == ";"):
+                    tokenizer.selectNext()
+                    return VarDec('vardec', allIdent)
+                raise Exception("Missing type ;")
+            raise Exception("Invalid expression")
         if(tokenizer.actual.value == 'while'):
             tokenizer.selectNext()
             if (tokenizer.actual.type == '('):
@@ -197,7 +202,7 @@ class Parser():
             return Parser.parseBlock(tokenizer)
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
-            return NoOp("", [])
+            return NoOp("", [])        
         raise Exception("Invalid syntax")
         
     def parseBlock(tokenizer):

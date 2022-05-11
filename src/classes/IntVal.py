@@ -3,4 +3,4 @@ class IntVal(Node):
 
     #@Override
     def Evaluate(self):
-        return tuple("int", self.variant)
+        return ("int", self.variant)

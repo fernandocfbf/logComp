@@ -1,5 +1,7 @@
+from zmq import TYPE
 from src.constants.reserved import RESERVED_WORDS
 from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN, POSSIBLE_DUAL_TOKENS
+from src.constants.types import TYPES
 from src.classes.Token import Token
 
 class Tokenizer:
@@ -67,6 +69,8 @@ class Tokenizer:
                         break
             if variable in RESERVED_WORDS.keys():
                 self.actual = Token("reserved", RESERVED_WORDS[variable])
+            elif variable in TYPES:
+                self.actual = Token("type", variable)
             else:
                 self.actual = Token("identifier", variable)
         

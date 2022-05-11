@@ -4,6 +4,4 @@ RESERVED_WORDS = {
     "if": "if",
     "else": "else",
     "scanf": "scanf",
-    "int": "int",
-    "str": "str",
 }

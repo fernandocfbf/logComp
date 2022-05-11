@@ -3,4 +3,4 @@ class StrVal(Node):
 
     #@Override
     def Evaluate(self):
-        return tuple("str", self.variant)
+        return ("str", self.variant)
