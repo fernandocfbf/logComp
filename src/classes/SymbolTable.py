@@ -3,6 +3,9 @@ from src.constants.types import TYPES
 class SymbolTable():
     symbols = dict()
 
+    def create(symbol_name):
+        SymbolTable.symbols[symbol_name] = None
+
     def setSymbol(symbol_name, symbol_type, symbol_value):
         if symbol_type in TYPES:
             SymbolTable.symbols[symbol_name] = tuple(symbol_type, symbol_value)

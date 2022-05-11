@@ -9,6 +9,7 @@ from src.classes.UnOp import UnOp
 from src.classes.NoOp import NoOp
 from src.classes.IntVal import IntVal
 from src.classes.StrVal import StrVal
+from src.classes.VarDec import VarDec
 from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
@@ -158,6 +159,16 @@ class Parser():
                         return Print('print', [result])
                     raise Exception("Missing type ;")
             raise Exception("Invalid syntax")
+        if (tokenizer.actual.value == 'type'):
+            tokenizer.selectNext()
+            allIdent = [Identifier(tokenizer.actual.value, [])]
+            while (tokenizer.actual.value == ","):
+                tokenizer.selectNext()
+                allIdent.append(Identifier(tokenizer.actual.value, []))
+                tokenizer.selectNext()
+            if (tokenizer.actual.type == ";"):
+                tokenizer.selectNext()
+                return VarDec('vardec', allIdent)
         if(tokenizer.actual.value == 'while'):
             tokenizer.selectNext()
             if (tokenizer.actual.type == '('):
