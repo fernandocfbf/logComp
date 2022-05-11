@@ -33,7 +33,10 @@ class Tokenizer:
             if (self.position >= len(self.origin)):  # if the expression ended, return EOF
                 self.actual = Token("EOF", "")
                 return self.actual
+        
+
         current_token = self.origin[self.position]
+        print(current_token)
         
         if current_token in POSSIBLE_DUAL_TOKENS:
             dual_token = current_token
@@ -42,6 +45,15 @@ class Tokenizer:
                 dual_token += current_token
                 self.position += 1
             self.actual = Token(ALL_TOKENS[dual_token], "")
+
+        elif current_token == '"':
+            self.position += 1
+            candidate = str()
+            while self.origin[self.position] != '"':
+                candidate += self.origin[self.position]
+                self.position += 1
+            self.position += 1
+            return Token("string", candidate)
 
         elif current_token in ALL_TOKENS:
             self.position += 1
