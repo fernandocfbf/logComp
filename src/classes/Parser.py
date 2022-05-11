@@ -99,6 +99,9 @@ class Parser():
             elif tokenizer.actual.type == "||":
                 tokenizer.selectNext()
                 node = BinOp("||", [node, Parser.parseTerm(tokenizer)])
+            elif tokenizer.actual.type == ".":
+                tokenizer.selectNext()
+                node = BinOp(".", [node, Parser.parseTerm(tokenizer)])
         return node
 
     def relExpression(tokenizer):
