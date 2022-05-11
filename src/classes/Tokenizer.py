@@ -69,10 +69,8 @@ class Tokenizer:
                 self.actual = Token("reserved", RESERVED_WORDS[variable])
             else:
                 self.actual = Token("identifier", variable)
-
         
         else:
-            print("TOKENIZER -> ", current_token)
             raise Exception("Character didn't recognize")
         return self.actual
 
