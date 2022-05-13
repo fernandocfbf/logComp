@@ -1,4 +1,3 @@
-from zmq import TYPE
 from src.constants.reserved import RESERVED_WORDS
 from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN, POSSIBLE_DUAL_TOKENS
 from src.constants.types import TYPES
@@ -35,9 +34,7 @@ class Tokenizer:
                 return self.actual
         
 
-        current_token = self.origin[self.position]
-        print(current_token)
-        
+        current_token = self.origin[self.position]        
         if current_token in POSSIBLE_DUAL_TOKENS:
             dual_token = current_token
             self.position += 1
@@ -48,12 +45,12 @@ class Tokenizer:
 
         elif current_token == '"':
             self.position += 1
-            candidate = str()
+            candidate = ""
             while self.origin[self.position] != '"':
                 candidate += self.origin[self.position]
                 self.position += 1
             self.position += 1
-            return Token("string", candidate)
+            self.actual = Token("string", candidate)
 
         elif current_token in ALL_TOKENS:
             self.position += 1

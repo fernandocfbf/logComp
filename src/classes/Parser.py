@@ -26,6 +26,7 @@ class Parser():
         description: computes non-binary tokens (-, +, (, !) and function scanf
         '''
         int_result = 0
+        print(tokenizer.actual.type, tokenizer.actual.value)
         if tokenizer.actual.type == "number":
             int_result = int(tokenizer.actual.value)
             tokenizer.selectNext()
@@ -167,8 +168,11 @@ class Parser():
                 tokenizer.selectNext()
                 while (tokenizer.actual.type == ","):
                     tokenizer.selectNext()
-                    allIdent.append((currentType, tokenizer.actual.value))
-                    tokenizer.selectNext()
+                    if (tokenizer.actual.type == 'identifier'):
+                        allIdent.append((currentType, tokenizer.actual.value))
+                        tokenizer.selectNext()
+                    else:
+                        raise Exception("Invalid expression")
                 if (tokenizer.actual.type == ";"):
                     tokenizer.selectNext()
                     return VarDec('vardec', allIdent)
