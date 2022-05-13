@@ -1,7 +1,7 @@
 {
     str x, y;
     x = "there";
-    y = "here";
+    y = x.x;
     printf(x);
     printf(y);
 }
