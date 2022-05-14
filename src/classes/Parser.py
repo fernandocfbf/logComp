@@ -26,7 +26,6 @@ class Parser():
         description: computes non-binary tokens (-, +, (, !) and function scanf
         '''
         int_result = 0
-        print(tokenizer.actual.type, tokenizer.actual.value)
         if tokenizer.actual.type == "number":
             int_result = int(tokenizer.actual.value)
             tokenizer.selectNext()
