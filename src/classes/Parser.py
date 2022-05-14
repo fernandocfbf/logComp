@@ -8,6 +8,8 @@ from src.classes.BinOp import BinOp
 from src.classes.UnOp import UnOp
 from src.classes.NoOp import NoOp
 from src.classes.IntVal import IntVal
+from src.classes.StrVal import StrVal
+from src.classes.VarDec import VarDec
 from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
@@ -28,6 +30,10 @@ class Parser():
             int_result = int(tokenizer.actual.value)
             tokenizer.selectNext()
             return IntVal(int_result, [])
+        elif tokenizer.actual.type == "string":
+            str_result = str(tokenizer.actual.value)
+            tokenizer.selectNext()
+            return StrVal(str_result, [])
         elif tokenizer.actual.type == "identifier":
             identifier = Identifier(tokenizer.actual.value, [])
             tokenizer.selectNext()
@@ -99,6 +105,9 @@ class Parser():
             elif tokenizer.actual.type == "||":
                 tokenizer.selectNext()
                 node = BinOp("||", [node, Parser.parseTerm(tokenizer)])
+            elif tokenizer.actual.type == ".":
+                tokenizer.selectNext()
+                node = BinOp(".", [node, Parser.parseTerm(tokenizer)])
         return node
 
     def relExpression(tokenizer):
@@ -150,6 +159,24 @@ class Parser():
                         return Print('print', [result])
                     raise Exception("Missing type ;")
             raise Exception("Invalid syntax")
+        if (tokenizer.actual.type == 'type'):
+            currentType = tokenizer.actual.value
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == 'identifier'):
+                allIdent = [(currentType, tokenizer.actual.value)]
+                tokenizer.selectNext()
+                while (tokenizer.actual.type == ","):
+                    tokenizer.selectNext()
+                    if (tokenizer.actual.type == 'identifier'):
+                        allIdent.append((currentType, tokenizer.actual.value))
+                        tokenizer.selectNext()
+                    else:
+                        raise Exception("Invalid expression")
+                if (tokenizer.actual.type == ";"):
+                    tokenizer.selectNext()
+                    return VarDec('vardec', allIdent)
+                raise Exception("Missing type ;")
+            raise Exception("Invalid expression")
         if(tokenizer.actual.value == 'while'):
             tokenizer.selectNext()
             if (tokenizer.actual.type == '('):
@@ -178,7 +205,7 @@ class Parser():
             return Parser.parseBlock(tokenizer)
         elif (tokenizer.actual.type == ";"):
             tokenizer.selectNext()
-            return NoOp("", [])
+            return NoOp("", [])        
         raise Exception("Invalid syntax")
         
     def parseBlock(tokenizer):

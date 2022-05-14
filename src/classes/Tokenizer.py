@@ -1,5 +1,6 @@
 from src.constants.reserved import RESERVED_WORDS
 from src.constants.tokens import ALL_TOKENS, IGNORE_TOKEN, POSSIBLE_DUAL_TOKENS
+from src.constants.types import TYPES
 from src.classes.Token import Token
 
 class Tokenizer:
@@ -31,8 +32,9 @@ class Tokenizer:
             if (self.position >= len(self.origin)):  # if the expression ended, return EOF
                 self.actual = Token("EOF", "")
                 return self.actual
-        current_token = self.origin[self.position]
         
+
+        current_token = self.origin[self.position]        
         if current_token in POSSIBLE_DUAL_TOKENS:
             dual_token = current_token
             self.position += 1
@@ -40,6 +42,15 @@ class Tokenizer:
                 dual_token += current_token
                 self.position += 1
             self.actual = Token(ALL_TOKENS[dual_token], "")
+
+        elif current_token == '"':
+            self.position += 1
+            candidate = ""
+            while self.origin[self.position] != '"':
+                candidate += self.origin[self.position]
+                self.position += 1
+            self.position += 1
+            self.actual = Token("string", candidate)
 
         elif current_token in ALL_TOKENS:
             self.position += 1
@@ -67,12 +78,12 @@ class Tokenizer:
                         break
             if variable in RESERVED_WORDS.keys():
                 self.actual = Token("reserved", RESERVED_WORDS[variable])
+            elif variable in TYPES:
+                self.actual = Token("type", variable)
             else:
                 self.actual = Token("identifier", variable)
-
         
         else:
-            print("TOKENIZER -> ", current_token)
             raise Exception("Character didn't recognize")
         return self.actual
 

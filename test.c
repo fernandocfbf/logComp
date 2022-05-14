@@ -1,5 +1,8 @@
 {
-    if (! (((1>0) || (1==0)) && (0==9))){
-        printf(2);
-    }
+    str x;
+    int y;
+    x = "there";
+    y = x == x;
+    printf(x);
+    printf(y);
 }
