@@ -4,5 +4,5 @@ class Print(Node):
 
     #Override
     def Evaluate(self):
-        print(self.children[0].Evaluate())
+        print(self.children[0].Evaluate()[1])
         return
