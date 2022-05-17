@@ -3,4 +3,5 @@ class Scanf(Node):
 
     #Override
     def Evaluate(self):
-        return int(input())
+        _input = int(input())
+        return ("int", _input)

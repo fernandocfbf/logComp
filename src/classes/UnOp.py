@@ -3,15 +3,15 @@ class UnOp(Node):
 
     #@Override
     def Evaluate(self):
-        children = self.children[0].Evaluate()[0]
+        children = self.children[0].Evaluate()
         childrenType = children[0]
         childrenValue = children[1]
         if childrenType == "int":
             if self.variant == "-":
-                return tuple('', -childrenValue)
+                return ('int', -childrenValue)
             elif self.variant == "+":
-                return tuple('', childrenValue)
+                return ('int', childrenValue)
             elif self.variant == "!":
-                return tuple('', not(childrenValue))
+                return ('int', not(childrenValue))
         else:
             raise Exception("Invalid expression")
