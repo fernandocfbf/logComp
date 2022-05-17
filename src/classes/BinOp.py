@@ -15,11 +15,11 @@ class BinOp(Node):
             elif self.variant == "/":
                 return ("int", int(node1[1]/node2[1]))
             elif self.variant == "==":
-                return ("int", int(node1[1]) == int(node2[1]))
+                return ("int", int(int(node1[1]) == int(node2[1])))
             elif self.variant == "<":
-                return ("int", int(node1[1]) < int(node2[1]))
+                return ("int", int(int(node1[1]) < int(node2[1])))
             elif self.variant == ">":
-                return ("int", int(node1[1]) > int(node2[1]))
+                return ("int", int(int(node1[1]) > int(node2[1])))
             elif self.variant == "||":
                 return ("int", node1[1] or node2[1])
             elif self.variant == "&&":
@@ -28,6 +28,7 @@ class BinOp(Node):
                 raise Exception("Invalid token")
         elif node1[0] == node2[0] == "str":
             if self.variant == "==":
+                print("HERE")
                 return ("int", int(node1[1] == node2[1]))
             elif self.variant == "<":
                 return ("int", int(node1[1] < node2[1]))
