@@ -4,7 +4,10 @@ class SymbolTable():
     symbols = dict()
 
     def create(symbol):
-        SymbolTable.symbols[symbol[1]] = (symbol[0], None)
+        if symbol[1] not in SymbolTable.symbols:
+            SymbolTable.symbols[symbol[1]] = (symbol[0], None)
+        else:
+            raise Exception("Cannot subscribe variable")
 
     def setSymbol(symbol_name, symbol_value):
         if symbol_value[0] in TYPES:
