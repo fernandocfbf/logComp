@@ -38,7 +38,7 @@ class BinOp(Node):
                 CodeGenerator.write("AND EAX, EBX")
                 #return ("int", node1[1] and node2[1])
             elif self.variant == ".":
-                CodeGenerator.write("any-binOp EAX, EBX")
+                CodeGenerator.write("any-binOp EAX, EBX") #Corrigir
                 #return ("str", str(node1[1]) + str(node2[1]))
             else:
                 raise Exception("Invalid token")
@@ -53,12 +53,12 @@ class BinOp(Node):
                 CodeGenerator.write("jg EAX, EBX")
                 #return ("int", int(node1[1] > node2[1]))
             elif self.variant == ".":
-                CodeGenerator.write("any-binOp EAX, EBX")
+                CodeGenerator.write("any-binOp EAX, EBX") #Corrigir
                 #return ("str", str(node1[1]) + str(node2[1]))
             return ("str", str(node1[1]) + str(node2[1]))
         elif node1[0] != node2[1]:
             if self.variant == ".":
-                CodeGenerator.write("any-binOp EAX, EBX")
+                CodeGenerator.write("any-binOp EAX, EBX") #Corrigir
                 #return ("str", str(node1[1]) + str(node2[1]))
 
         raise Exception("Invalid expression")
