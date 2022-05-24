@@ -1,8 +1,14 @@
 from src.classes.Node import Node
+from src.classes.CodeGenerator import CodeGenerator
 
 class While(Node):
     
     #Override
     def Evaluate(self):
-        while self.children[0].Evaluate()[1]:
-            self.children[1].Evaluate()
+        CodeGenerator.write("LOOP_{0}".format(self.i))
+        self.children[0].Evaluate()
+        CodeGenerator.write("cmp EBX, False")
+        CodeGenerator.write("je EXIT_{0}".format(self.i))
+        self.children[1].Evaluate()
+        CodeGenerator.write("jmp LOOP_{0}".format(self.i))
+        CodeGenerator.write("EXIT_{0}".format(self.i))
