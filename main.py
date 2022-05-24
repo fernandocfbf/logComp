@@ -9,4 +9,4 @@ with open(file) as f:
     
 if exp_result != None:
     exp_result.Evaluate()
-    print(CodeGenerator.assembly)
+    CodeGenerator.dump()

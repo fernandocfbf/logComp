@@ -9,6 +9,6 @@ class CodeGenerator:
 
     def dump():
         file_content = HEADER + CodeGenerator.assembly + FOOTER
-        return file_content
-
+        with open("program.asm", 'w') as file:
+            file.write(file_content)
     

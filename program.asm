@@ -1,4 +1,4 @@
-HEADER = '''
+
 ; constantes
 SYS_EXIT equ 1
 SYS_READ equ 3
@@ -79,13 +79,33 @@ binop_exit:
 _start:
 
   PUSH EBP ; guarda o base pointer
-  MOV EBP, ESP ; estabelece um novo base pointer \n
-'''
+  MOV EBP, ESP ; estabelece um novo base pointer 
 
-FOOTER = '''
-\n
+push DWORD 0
+mov EBX, 0
+mov [EBP-4], EBX
+LOOP_15
+mov EBX, [EBP - 4]
+push EBX
+mov EBX, 5
+pop EAX
+cmp EAX, EBX
+call binop_jl
+cmp EBX, False
+je EXIT_15
+mov EBX, [EBP - 4]
+push EBX
+mov EBX, 1
+pop EAX
+add EAX, EBX
+mov EBX, EAX
+mov [EBP-4], EBX
+jmp LOOP_15
+EXIT_15
+
+
+
 ; interrupcao de saida
   POP EBP
   MOV EAX, 1
   INT 0x80
-'''
