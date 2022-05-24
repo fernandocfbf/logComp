@@ -1,6 +1,6 @@
 import sys
-
 from src.classes.Parser import Parser
+from src.classes.CodeGenerator import CodeGenerator
 
 file = sys.argv[1]
 with open(file) as f:
@@ -9,3 +9,4 @@ with open(file) as f:
     
 if exp_result != None:
     exp_result.Evaluate()
+    print(CodeGenerator.assembly)
