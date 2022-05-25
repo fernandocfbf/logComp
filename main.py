@@ -9,4 +9,5 @@ with open(file) as f:
     
 if exp_result != None:
     exp_result.Evaluate()
-    CodeGenerator.dump()
+    print(sys.argv[1])
+    CodeGenerator.dump(sys.argv[1].replace(".c", ".asm"))

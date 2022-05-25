@@ -7,8 +7,9 @@ class CodeGenerator:
         CodeGenerator.assembly += code 
         CodeGenerator.assembly += '\n'
 
-    def dump():
+    def dump(file_name):
         file_content = HEADER + CodeGenerator.assembly + FOOTER
-        with open("program.asm", 'w') as file:
+        print(file_name)
+        with open(file_name, 'w') as file:
             file.write(file_content)
     
