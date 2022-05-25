@@ -5,5 +5,5 @@ class IntVal(Node):
 
     #@Override
     def Evaluate(self):
-        CodeGenerator.write("mov EBX, {0}".format(self.variant))
+        CodeGenerator.write("MOV EBX, {0}".format(self.variant))
         return ("int", self.variant)

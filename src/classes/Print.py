@@ -5,8 +5,8 @@ class Print(Node):
 
     #Override
     def Evaluate(self):
-        CodeGenerator.write("push EBX")
-        CodeGenerator.write("call print")
-        CodeGenerator.write("pop EBX")
-        print(self.children[0].Evaluate()[1])
+        self.children[0].Evaluate()
+        CodeGenerator.write("PUSH EBX")
+        CodeGenerator.write("CALL print")
+        CodeGenerator.write("POP EBX")
         return

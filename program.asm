@@ -81,27 +81,49 @@ _start:
   PUSH EBP ; guarda o base pointer
   MOV EBP, ESP ; estabelece um novo base pointer 
 
-push DWORD 0
-mov EBX, 0
-mov [EBP-4], EBX
-LOOP_15
-mov EBX, [EBP - 4]
-push EBX
-mov EBX, 5
-pop EAX
-cmp EAX, EBX
-call binop_jl
-cmp EBX, False
-je EXIT_15
-mov EBX, [EBP - 4]
-push EBX
-mov EBX, 1
-pop EAX
-add EAX, EBX
-mov EBX, EAX
-mov [EBP-4], EBX
-jmp LOOP_15
-EXIT_15
+PUSH DWORD 0
+PUSH DWORD 0
+PUSH DWORD 0
+MOV EBX, 5
+MOV [EBP-8], EBX
+MOV EBX, 2
+MOV [EBP-4], EBX
+MOV EBX, 1
+MOV [EBP-12], EBX
+LOOP_30
+MOV EBX, [EBP - 4]
+PUSH EBX
+MOV EBX, [EBP - 8]
+PUSH EBX
+MOV EBX, 1
+POP EAX
+ADD EAX, EBX
+MOV EBX, EAX
+POP EAX
+CMP EAX, EBX
+CALL binop_jl
+CMP EBX, False
+JE EXIT_30
+MOV EBX, [EBP - 12]
+PUSH EBX
+MOV EBX, [EBP - 4]
+POP EAX
+IMUL EBX
+MOV EBX, EAX
+MOV [EBP-12], EBX
+MOV EBX, [EBP - 4]
+PUSH EBX
+MOV EBX, 1
+POP EAX
+ADD EAX, EBX
+MOV EBX, EAX
+MOV [EBP-4], EBX
+JMP LOOP_30
+EXIT_30
+MOV EBX, [EBP - 12]
+PUSH EBX
+CALL print
+POP EBX
 
 
 
