@@ -5,7 +5,7 @@ class While(Node):
     
     #Override
     def Evaluate(self):
-        CodeGenerator.write("LOOP_{0}".format(self.i))
+        CodeGenerator.write("LOOP_{0}:".format(self.i))
         self.children[0].Evaluate()
         CodeGenerator.write("CMP EBX, False")
         CodeGenerator.write("JE EXIT_{0}".format(self.i))
