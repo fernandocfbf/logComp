@@ -11,4 +11,4 @@ class While(Node):
         CodeGenerator.write("JE EXIT_{0}".format(self.i))
         self.children[1].Evaluate()
         CodeGenerator.write("JMP LOOP_{0}".format(self.i))
-        CodeGenerator.write("EXIT_{0}".format(self.i))
+        CodeGenerator.write("EXIT_{0}:".format(self.i))
