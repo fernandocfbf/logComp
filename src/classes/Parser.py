@@ -1,4 +1,5 @@
 from gzip import READ
+from lib2to3.pgen2 import token
 from src.classes.Identifier import Identifier
 from src.classes.Print import Print
 from src.classes.Scanf import Scanf
@@ -10,6 +11,7 @@ from src.classes.NoOp import NoOp
 from src.classes.IntVal import IntVal
 from src.classes.StrVal import StrVal
 from src.classes.VarDec import VarDec
+from src.classes.FuncDec import FuncDec
 from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
@@ -224,6 +226,53 @@ class Parser():
             return block
         else:
             raise Exception("Invalid code syntax")
+
+    def parseDeclaration(tokenizer):
+        '''
+        input: Tokenizer object
+        output:
+        description:
+        '''
+        funcDecObject = FuncDec("", list())
+        if tokenizer.actual.type == 'type':
+            currentType = tokenizer.actual.value
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == 'identifier'):
+                identifier = Identifier(tokenizer.actual.value, [])
+                funcDecObject.children.append(VarDec('vardec', (currentType, identifier))) #function type and name
+                tokenizer.selectNext()
+                if (tokenizer.actual.type == '('):
+                    tokenizer.selectNext()
+                    if tokenizer.actual.type == 'type':
+                        currentType = tokenizer.actual.value
+                        tokenizer.selectNext()
+                        if tokenizer.actual.type == 'identifier':
+                            identifier = Identifier(tokenizer.actual.value, [])
+                            funcDecObject.children.append(VarDec('vardec', (currentType, identifier)))
+                            tokenizer.selectNext()
+                            while (tokenizer.actual.type == ","):
+                                tokenizer.selectNext()
+                                if tokenizer.actual.type == 'type':
+                                    currentType = tokenizer.actual.value
+                                    tokenizer.selectNext()
+                                    if tokenizer.actual.type == 'identifier':
+                                        identifier = Identifier(tokenizer.actual.value, [])
+                                        funcDecObject.children.append(VarDec('vardec', (currentType, identifier)))
+                                        tokenizer.selectNext()
+                    
+                    if (tokenizer.actual.type == ')'):
+                        funcDecObject.children.append(Parser.parseBlock())
+                        return funcDecObject
+        raise Exception("Invalid syntax")
+
+                        
+    def parseProgram(tokenizer):
+        '''
+        input: Tokenizer object
+        output:
+        description:
+        '''
+        
 
     def clean_comments(text):
         '''
