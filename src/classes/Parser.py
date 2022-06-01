@@ -230,8 +230,9 @@ class Parser():
     def parseDeclaration(tokenizer):
         '''
         input: Tokenizer object
-        output:
-        description:
+        output: FuncDec object
+        description: computes a function type, name
+            and the respective parameters
         '''
         funcDecObject = FuncDec("", list())
         if tokenizer.actual.type == 'type':
@@ -261,7 +262,7 @@ class Parser():
                                         tokenizer.selectNext()
                     
                     if (tokenizer.actual.type == ')'):
-                        funcDecObject.children.append(Parser.parseBlock())
+                        funcDecObject.children.append(Parser.parseBlock(tokenizer))
                         return funcDecObject
         raise Exception("Invalid syntax")
 
@@ -269,9 +270,16 @@ class Parser():
     def parseProgram(tokenizer):
         '''
         input: Tokenizer object
-        output:
-        description:
+        output: Block Object
+        description: call parseDeclaration while not EOF.
+            Then appends all the FuncDec objects in a
+            Block object.
         '''
+        block = Block("", list())
+        while (tokenizer.actual.type != "EOF"):
+            new_func_dec = Parser.parseDeclaration(tokenizer)
+            block.children.append(new_func_dec)
+        return block
         
 
     def clean_comments(text):
