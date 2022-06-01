@@ -12,6 +12,7 @@ from src.classes.IntVal import IntVal
 from src.classes.StrVal import StrVal
 from src.classes.VarDec import VarDec
 from src.classes.FuncDec import FuncDec
+from src.classes.FuncCall import FuncCall
 from src.classes.Block import Block
 from src.classes.Token import Token
 from src.classes.Assignment import Assignment
@@ -39,7 +40,19 @@ class Parser():
         elif tokenizer.actual.type == "identifier":
             identifier = Identifier(tokenizer.actual.value, [])
             tokenizer.selectNext()
-            return identifier
+            if tokenizer.actual.type == "(":
+                func_call = FuncCall("", list(Parser.relExpression(tokenizer)))
+                while (tokenizer.actual.type == ","):
+                    tokenizer.selectNext()
+                    relExp = Parser.relExpression(tokenizer)
+                    func_call.children.append(relExp)
+
+                if tokenizer.actual.type == ")":
+                    return func_call
+                raise Exception("Invalid syntax")
+
+            else:
+                return identifier
         elif tokenizer.actual.type == "+":
             tokenizer.selectNext()
             node = UnOp("+", [Parser.parseFactor(tokenizer)])
@@ -265,8 +278,7 @@ class Parser():
                         funcDecObject.children.append(Parser.parseBlock(tokenizer))
                         return funcDecObject
         raise Exception("Invalid syntax")
-
-                        
+                 
     def parseProgram(tokenizer):
         '''
         input: Tokenizer object
@@ -281,7 +293,6 @@ class Parser():
             block.children.append(new_func_dec)
         return block
         
-
     def clean_comments(text):
         '''
         input: string to be cleaned
