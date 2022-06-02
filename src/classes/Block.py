@@ -5,5 +5,5 @@ class Block(Node):
     #Override
     def Evaluate(self, st):
         for children in self.children:
-            children.Evaluate()
+            children.Evaluate(st)
         return

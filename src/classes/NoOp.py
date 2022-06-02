@@ -1,6 +1,6 @@
 from src.classes.Node import Node
 
-class NoOp(Node, st):
+class NoOp(Node):
     #@Override
-    def Evaluate(self):
+    def Evaluate(self, st):
         return

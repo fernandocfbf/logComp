@@ -308,6 +308,7 @@ class Parser():
                                         tokenizer.selectNext()
                     
                     if (tokenizer.actual.type == ')'):
+                        tokenizer.selectNext()
                         funcDecObject.children.append(Parser.parseBlock(tokenizer))
                         return funcDecObject
         raise Exception("Invalid syntax")
@@ -356,7 +357,7 @@ class Parser():
         cleaned_expression = Parser.clean_comments(expression)
         tokens = Tokenizer(cleaned_expression, 0, Token(None, cleaned_expression[0]))
         tokens.selectNext()
-        final_result = Parser.parseBlock(tokens)
+        final_result = Parser.parseProgram(tokens)
         if(tokens.actual.type != "EOF"):
             raise Exception("Invalid syntax")
         return final_result
