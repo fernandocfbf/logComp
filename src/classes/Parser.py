@@ -51,6 +51,7 @@ class Parser():
                     func_call.children.append(relExp)
 
                 if tokenizer.actual.type == ")":
+                    tokenizer.selectNext()
                     return func_call
                 raise Exception("Invalid syntax")
 
