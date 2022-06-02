@@ -1,7 +1,9 @@
 from gzip import READ
 from lib2to3.pgen2 import token
+from logging import raiseExceptions
 from src.classes.Identifier import Identifier
 from src.classes.Print import Print
+from src.classes.Return import Return
 from src.classes.Scanf import Scanf
 from src.classes.While import While
 from src.classes.If import If
@@ -41,6 +43,7 @@ class Parser():
             identifier = Identifier(tokenizer.actual.value, [])
             tokenizer.selectNext()
             if tokenizer.actual.type == "(":
+                tokenizer.selectNext()
                 func_call = FuncCall("", list(Parser.relExpression(tokenizer)))
                 while (tokenizer.actual.type == ","):
                     tokenizer.selectNext()
@@ -160,6 +163,20 @@ class Parser():
                     tokenizer.selectNext()
                     return Assignment(identifier.variant, [identifier, result])
                 raise Exception("Missing type ;")
+            elif tokenizer.actual.type == "(":
+                tokenizer.selectNext()
+                func_call = FuncCall("", list(Parser.relExpression(tokenizer)))
+                while (tokenizer.actual.type == ","):
+                    tokenizer.selectNext()
+                    relExp = Parser.relExpression(tokenizer)
+                    func_call.children.append(relExp)
+
+                if tokenizer.actual.type == ")":
+                    tokenizer.selectNext()
+                    if (tokenizer.actual.type == ";"):
+                        tokenizer.selectNext()
+                        return func_call
+                raise Exception("Inalid Syntax")
             else:
                 raise Exception("Invalid syntax")
         if (tokenizer.actual.value == 'print'):
@@ -192,6 +209,21 @@ class Parser():
                     return VarDec('vardec', allIdent)
                 raise Exception("Missing type ;")
             raise Exception("Invalid expression")
+        
+        if (tokenizer.actual.value == 'return'):
+            tokenizer.selectNext()
+            if (tokenizer.actual.type == '('):
+                tokenizer.selectNext()
+                result = Parser.relExpression(tokenizer)
+                if (tokenizer.actual.type == ')'):
+                    tokenizer.selectNext()
+                    if (tokenizer.actual.type == ";"):
+                        tokenizer.selectNext()
+                        return Return('', [result])
+                    raise Exception("Missing type ;")
+            raise Exception("Invalid syntax")
+
+        
         if(tokenizer.actual.value == 'while'):
             tokenizer.selectNext()
             if (tokenizer.actual.type == '('):
