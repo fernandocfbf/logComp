@@ -3,6 +3,6 @@ from src.classes.SymbolTable import SymbolTable
 class Return(Node):
 
     #Override
-    def Evaluate(self):
+    def Evaluate(self, st):
         #corrigir
         return

@@ -2,7 +2,7 @@ from src.classes.Node import Node
 class UnOp(Node):
 
     #@Override
-    def Evaluate(self):
+    def Evaluate(self, st):
         children = self.children[0].Evaluate()
         childrenType = children[0]
         childrenValue = children[1]

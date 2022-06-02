@@ -3,7 +3,7 @@ from src.classes.SymbolTable import SymbolTable
 class Block(Node):
 
     #Override
-    def Evaluate(self):
+    def Evaluate(self, st):
         for children in self.children:
             children.Evaluate()
         return

@@ -4,5 +4,5 @@ from src.classes.SymbolTable import SymbolTable
 class Identifier(Node):
 
     #Override
-    def Evaluate(self):
+    def Evaluate(self, st):
         return SymbolTable.getSymbol(self.variant)

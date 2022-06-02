@@ -3,7 +3,7 @@ from src.classes.Node import Node
 class If(Node):
     
     #Override
-    def Evaluate(self):
+    def Evaluate(self, st):
         if self.children[0].Evaluate():
             return self.children[1].Evaluate()
         elif len(self.children) > 2:
