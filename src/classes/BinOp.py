@@ -3,8 +3,8 @@ class BinOp(Node):
 
     #@Override
     def Evaluate(self, st):
-        node1 = self.children[0].Evaluate()
-        node2 = self.children[1].Evaluate()
+        node1 = self.children[0].Evaluate(st)
+        node2 = self.children[1].Evaluate(st)
 
         if node1[0] == node2[0] == "int":
             if self.variant == "+":

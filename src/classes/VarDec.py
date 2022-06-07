@@ -5,5 +5,5 @@ class VarDec(Node):
     #@Override
     def Evaluate(self, st):
         for children in self.children:
-            SymbolTable.create(children)
+            st.create(children)
         return

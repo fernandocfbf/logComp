@@ -13,4 +13,4 @@ if exp_result != None:
     st_main = SymbolTable()
     main = FuncCall('main', list())
     exp_result.children.append(main)
-    exp_result.children[-1].Evaluate(st_main)
+    exp_result.Evaluate(st_main)

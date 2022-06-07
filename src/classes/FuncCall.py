@@ -6,8 +6,7 @@ class FuncCall(Node):
     #@Override
     def Evaluate(self, st):
         #Corrigir
-        type, ref = FuncTable.getFunction(self.variant).Evaluate(st)
-        print('ref -> ', ref, type)
+        type, ref = FuncTable.getFunction(self.variant)
         symbol_table = SymbolTable()
         parameters = list()
 
@@ -15,7 +14,7 @@ class FuncCall(Node):
             parameters.append(self.children[i].variant)
             ref.children[i].Evaluate(symbol_table)
         
-        for i in range(parameters):
+        for i in range(len(parameters)):
             symbol_table.setSymbol(i, self.children[i].Evaluate())
         
         return ref.children[-1].Evaluate(symbol_table)

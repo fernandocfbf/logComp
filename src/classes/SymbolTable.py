@@ -2,7 +2,7 @@ from src.constants.types import TYPES
 
 class SymbolTable():
     def __init__(self):
-        self.symbols = dict()
+        self.symbols = {}
         
     def create(self, symbol):
         if symbol[1] not in self.symbols:

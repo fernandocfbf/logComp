@@ -5,4 +5,4 @@ class Identifier(Node):
 
     #Override
     def Evaluate(self, st):
-        return SymbolTable.getSymbol(self.variant)
+        return st.getSymbol(self.variant)

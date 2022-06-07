@@ -5,6 +5,6 @@ class Assignment(Node):
     #Override
     def Evaluate(self, st):
         node1 = self.children[0].variant
-        node2 = self.children[1].Evaluate()
-        SymbolTable.setSymbol(node1, node2)
+        node2 = self.children[1].Evaluate(st)
+        st.setSymbol(node1, node2)
         return
