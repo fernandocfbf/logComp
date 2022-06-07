@@ -5,5 +5,4 @@ RESERVED_WORDS = {
     "else": "else",
     "scanf": "scanf",
     "return": "return",
-    "void": "void"
 }

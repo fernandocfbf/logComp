@@ -1,1 +1,1 @@
-TYPES = ["int", "str"]
+TYPES = ["int", "str", "void"]

@@ -3,7 +3,7 @@ class UnOp(Node):
 
     #@Override
     def Evaluate(self, st):
-        children = self.children[0].Evaluate()
+        children = self.children[0].Evaluate(st)
         childrenType = children[0]
         childrenValue = children[1]
         if childrenType == "int":
